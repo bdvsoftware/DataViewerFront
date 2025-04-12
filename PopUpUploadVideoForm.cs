@@ -1,20 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using DataViewerFront.Services;
 
 namespace DataViewerFront
 {
-    public partial class Form1 : Form
+    public partial class PopUpUploadVideoForm : Form
     {
 
         private readonly ApiService _apiService;
 
-        public Form1()
+        public PopUpUploadVideoForm()
         {
             InitializeComponent();
-            progressBar1.Hide();
             _apiService = new ApiService();
         }
 
-        private async void button1_Click(object sender, EventArgs e)
+        private async void PopUpUploadVideoForm_Load(object sender, EventArgs e)
+        {
+            
+        }
+
+        private async void UploadButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.Title = "Select a file";
@@ -46,11 +59,7 @@ namespace DataViewerFront
                     MessageBox.Show(ex.Message);
                 }
             }
-        }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
+            Close();
         }
     }
 }

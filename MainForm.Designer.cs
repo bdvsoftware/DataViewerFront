@@ -1,6 +1,6 @@
 ﻿namespace DataViewerFront
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             openFileDialog1 = new OpenFileDialog();
-            button1 = new Button();
-            progressBar1 = new ProgressBar();
             dataGridView1 = new DataGridView();
             Name = new DataGridViewTextBoxColumn();
             Status = new DataGridViewTextBoxColumn();
             Actions = new DataGridViewTextBoxColumn();
+            textBox1 = new TextBox();
+            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -42,28 +42,11 @@
             // 
             openFileDialog1.FileName = "openFileDialog1";
             // 
-            // button1
-            // 
-            button1.Location = new Point(360, 12);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 0;
-            button1.Text = "File";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
-            // progressBar1
-            // 
-            progressBar1.Location = new Point(230, 60);
-            progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(335, 23);
-            progressBar1.TabIndex = 1;
-            // 
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Name, Status, Actions });
-            dataGridView1.Location = new Point(218, 106);
+            dataGridView1.Location = new Point(220, 146);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(360, 150);
             dataGridView1.TabIndex = 2;
@@ -84,27 +67,46 @@
             Actions.HeaderText = "Actions";
             Actions.Name = "Actions";
             // 
-            // Form1
+            // textBox1
+            // 
+            textBox1.Location = new Point(375, 117);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(45, 23);
+            textBox1.TabIndex = 3;
+            textBox1.Text = "Videos:";
+            // 
+            // button2
+            // 
+            button2.Location = new Point(361, 46);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 4;
+            button2.Text = "Upload";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(button2);
+            Controls.Add(textBox1);
             Controls.Add(dataGridView1);
-            Controls.Add(progressBar1);
-            Controls.Add(button1);
-            Name = "Form1";
             Text = "Form1";
+            Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
         private OpenFileDialog openFileDialog1;
-        private Button button1;
-        private ProgressBar progressBar1;
         private DataGridView dataGridView1;
         private DataGridViewTextBoxColumn Name;
         private DataGridViewTextBoxColumn Status;
         private DataGridViewTextBoxColumn Actions;
+        private TextBox textBox1;
+        private Button button2;
     }
 }
