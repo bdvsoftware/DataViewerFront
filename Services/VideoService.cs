@@ -1,34 +1,31 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Headers;
 using DataViewerFront.Utils;
 
 namespace DataViewerFront.Services
 {
-    internal class ApiService
+    internal class VideoService : BaseService
     {
-        private readonly string _apiUrl = "http://localhost:5228/api";
 
-        private readonly HttpClient _httpClient = new HttpClient();
+        private string _videoUrl;
 
-        public async Task UploadFileAsync(string filePath, Action<int> progressCallback)
+        public VideoService() {
+            _videoUrl = _apiUrl + "/video";
+        }
+
+        public async Task UploadFileAsync(string filePath, string gpName, string sessionName, Action<int> progressCallback)
         {
             try
             {
-                using var client = new HttpClient();
                 using var form = new MultipartFormDataContent();
                 using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
 
                 var streamContent = new ProgressableStreamContent(fileStream, 4096, progressCallback);
-
                 streamContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                form.Add(streamContent, "file", Path.GetFileName(filePath)); // cambia esto según tu backend
+                form.Add(streamContent, "file", Path.GetFileName(filePath));
+                form.Add(new StringContent(gpName), "grandPrixName");
+                form.Add(new StringContent(sessionName), "sessionName");
 
-                var response = await client.PostAsync(_apiUrl+"/video/upload", form);
+                var response = await _httpClient.PostAsync(_videoUrl + "/upload", form);
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception($"Error en la subida. Código: {response.StatusCode}");

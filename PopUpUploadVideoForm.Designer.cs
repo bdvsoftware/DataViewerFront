@@ -30,6 +30,8 @@
         {
             UploadButton = new Button();
             progressBar1 = new ProgressBar();
+            comboGp = new ComboBox();
+            comboSessionType = new ComboBox();
             SuspendLayout();
             // 
             // UploadButton
@@ -49,11 +51,30 @@
             progressBar1.Size = new Size(226, 23);
             progressBar1.TabIndex = 1;
             // 
+            // comboGp
+            // 
+            comboGp.FormattingEnabled = true;
+            comboGp.Location = new Point(349, 23);
+            comboGp.Name = "comboGp";
+            comboGp.Size = new Size(121, 23);
+            comboGp.TabIndex = 2;
+            comboGp.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
+            // 
+            // comboSessionType
+            // 
+            comboSessionType.FormattingEnabled = true;
+            comboSessionType.Location = new Point(349, 68);
+            comboSessionType.Name = "comboSessionType";
+            comboSessionType.Size = new Size(121, 23);
+            comboSessionType.TabIndex = 3;
+            // 
             // PopUpUploadVideoForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(comboSessionType);
+            Controls.Add(comboGp);
             Controls.Add(progressBar1);
             Controls.Add(UploadButton);
             Name = "PopUpUploadVideoForm";
@@ -66,5 +87,7 @@
 
         private Button UploadButton;
         private ProgressBar progressBar1;
+        private ComboBox comboGp;
+        private ComboBox comboSessionType;
     }
 }

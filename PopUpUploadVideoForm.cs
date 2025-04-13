@@ -14,17 +14,24 @@ namespace DataViewerFront
     public partial class PopUpUploadVideoForm : Form
     {
 
-        private readonly ApiService _apiService;
+        private readonly VideoService _videoService;
+        private readonly GrandPrixService _grandPrixService;
+        private readonly SessionTypeService _sessionTypeService;
 
         public PopUpUploadVideoForm()
         {
             InitializeComponent();
-            _apiService = new ApiService();
+            _videoService = new VideoService();
+            _grandPrixService = new GrandPrixService();
+            _sessionTypeService = new SessionTypeService();
         }
 
         private async void PopUpUploadVideoForm_Load(object sender, EventArgs e)
         {
-            
+            var gpNames = await _grandPrixService.GetAllGrandPrixNamesAsync();
+            comboGp.DataSource = gpNames;
+            var sessionTypeNames = await _sessionTypeService.GetAllSessionTypeNamesAsync();
+            comboSessionType.DataSource = sessionTypeNames;
         }
 
         private async void UploadButton_Click(object sender, EventArgs e)
@@ -40,11 +47,9 @@ namespace DataViewerFront
 
                 progressBar1.Show();
 
-                var apiService = new ApiService();
-
                 try
                 {
-                    await apiService.UploadFileAsync(filePath, progress =>
+                    await _videoService.UploadFileAsync(filePath, comboGp.SelectedItem.ToString(), comboSessionType.SelectedItem.ToString(), progress =>
                     {
                         Invoke(new Action(() =>
                         {
@@ -60,6 +65,11 @@ namespace DataViewerFront
                 }
             }
             Close();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
         }
     }
 }
