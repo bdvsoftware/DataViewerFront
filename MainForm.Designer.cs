@@ -30,9 +30,6 @@
         {
             openFileDialog1 = new OpenFileDialog();
             dataGridView1 = new DataGridView();
-            Name = new DataGridViewTextBoxColumn();
-            Status = new DataGridViewTextBoxColumn();
-            Actions = new DataGridViewTextBoxColumn();
             textBox1 = new TextBox();
             button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -44,28 +41,13 @@
             // 
             // dataGridView1
             // 
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Name, Status, Actions });
-            dataGridView1.Location = new Point(220, 146);
+            dataGridView1.Location = new Point(189, 146);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(360, 150);
+            dataGridView1.Size = new Size(424, 150);
             dataGridView1.TabIndex = 2;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
-            // 
-            // Name
-            // 
-            Name.HeaderText = "Name";
-            Name.Name = "Name";
-            // 
-            // Status
-            // 
-            Status.HeaderText = "Status";
-            Status.Name = "Status";
-            // 
-            // Actions
-            // 
-            Actions.HeaderText = "Actions";
-            Actions.Name = "Actions";
             // 
             // textBox1
             // 
@@ -93,6 +75,7 @@
             Controls.Add(button2);
             Controls.Add(textBox1);
             Controls.Add(dataGridView1);
+            Name = "MainForm";
             Text = "Form1";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
@@ -103,9 +86,6 @@
         #endregion
         private OpenFileDialog openFileDialog1;
         private DataGridView dataGridView1;
-        private DataGridViewTextBoxColumn Name;
-        private DataGridViewTextBoxColumn Status;
-        private DataGridViewTextBoxColumn Actions;
         private TextBox textBox1;
         private Button button2;
     }

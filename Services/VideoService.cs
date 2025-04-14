@@ -1,4 +1,6 @@
 ﻿using System.Net.Http.Headers;
+using System.Text.Json;
+using DataViewerFront.Dtos;
 using DataViewerFront.Utils;
 
 namespace DataViewerFront.Services
@@ -35,6 +37,16 @@ namespace DataViewerFront.Services
             {
                 throw new Exception("Error durante la subida: " + ex.Message);
             }
+        }
+
+        public async Task<IEnumerable<ResponseVideoDto>> GetVideos()
+        {
+            var response = await _httpClient.GetAsync(_videoUrl+"/all");
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<List<ResponseVideoDto>>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
         }
     }
 }
