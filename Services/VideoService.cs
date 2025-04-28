@@ -48,5 +48,14 @@ namespace DataViewerFront.Services
                 PropertyNameCaseInsensitive = true
             });
         }
+
+        public async Task ProcessVideo(int videoId)
+        {
+            var response = await _httpClient.PostAsync(_videoUrl + "/process/" + videoId, null);
+            if(!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Error de procesamiento. Código: {response.StatusCode}");
+            }
+        }
     }
 }

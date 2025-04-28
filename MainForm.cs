@@ -10,6 +10,8 @@ namespace DataViewerFront
 
         private readonly VideoService _videoService;
 
+        private int _selectedVideoId;
+
         public MainForm()
         {
             InitializeComponent();
@@ -18,10 +20,22 @@ namespace DataViewerFront
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
+            Console.WriteLine("aaaaaa");
         }
 
         private async void Form1_Load(object sender, EventArgs e)
+        {
+            await LoadVideos();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            PopUpUploadVideoForm popUpUploadVideo = new PopUpUploadVideoForm();
+            popUpUploadVideo.FormClosed += PopUpUploadVideo_FormClosed;
+            popUpUploadVideo.Show();
+        }
+
+        private async Task LoadVideos()
         {
             _videos = await _videoService.GetVideos();
             dataGridView1.DataSource = _videos;
@@ -32,22 +46,19 @@ namespace DataViewerFront
                 totalHeight += row.Height;
             }
 
-            // Ajustar el tamaño total (ancho) del DataGridView según las columnas
             int totalWidth = 0;
             foreach (DataGridViewColumn column in dataGridView1.Columns)
             {
                 totalWidth += column.Width;
             }
 
-            // Establecer el tamaño del DataGridView para que coincida con el contenido
-            dataGridView1.Height = totalHeight + dataGridView1.ColumnHeadersHeight;  // Incluir altura de los encabezados
+            dataGridView1.Height = totalHeight + dataGridView1.ColumnHeadersHeight;  
             dataGridView1.Width = totalWidth + dataGridView1.RowHeadersWidth;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void PopUpUploadVideo_FormClosed(object sender, FormClosedEventArgs e)
         {
-            PopUpUploadVideoForm popUpUploadVideo = new PopUpUploadVideoForm();
-            popUpUploadVideo.Show();
+            await LoadVideos();
         }
     }
 }

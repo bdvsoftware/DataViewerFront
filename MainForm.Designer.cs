@@ -32,6 +32,7 @@
             dataGridView1 = new DataGridView();
             textBox1 = new TextBox();
             button2 = new Button();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -43,7 +44,7 @@
             // 
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(189, 146);
+            dataGridView1.Location = new Point(183, 158);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(424, 150);
             dataGridView1.TabIndex = 2;
@@ -67,11 +68,21 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
+            // button1
+            // 
+            button1.Location = new Point(361, 363);
+            button1.Name = "button1";
+            button1.Size = new Size(93, 23);
+            button1.TabIndex = 5;
+            button1.Text = "Process video";
+            button1.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(button1);
             Controls.Add(button2);
             Controls.Add(textBox1);
             Controls.Add(dataGridView1);
@@ -88,5 +99,6 @@
         private DataGridView dataGridView1;
         private TextBox textBox1;
         private Button button2;
+        private Button button1;
     }
 }
