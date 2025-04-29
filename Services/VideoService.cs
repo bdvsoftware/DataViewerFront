@@ -49,12 +49,18 @@ namespace DataViewerFront.Services
             });
         }
 
-        public async Task ProcessVideo(int videoId)
+        public async Task ProcessVideo(int? videoId)
         {
-            var response = await _httpClient.PostAsync(_videoUrl + "/process/" + videoId, null);
-            if(!response.IsSuccessStatusCode)
+            if(videoId != null)
             {
-                throw new Exception($"Error de procesamiento. Código: {response.StatusCode}");
+                var response = await _httpClient.PostAsync(_videoUrl + "/process/" + videoId, null);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception($"Error while processing. Código: {response.StatusCode}");
+                }
+            }else
+            {
+                throw new Exception("No video selected");
             }
         }
     }

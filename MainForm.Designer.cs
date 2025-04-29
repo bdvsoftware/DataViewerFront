@@ -1,4 +1,6 @@
-﻿namespace DataViewerFront
+﻿using System.Windows.Forms;
+
+namespace DataViewerFront
 {
     partial class MainForm
     {
@@ -33,6 +35,7 @@
             textBox1 = new TextBox();
             button2 = new Button();
             button1 = new Button();
+            button3 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -48,11 +51,12 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(424, 150);
             dataGridView1.TabIndex = 2;
+            dataGridView1.CellClick += dataGridView1_CellClick;
             dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(375, 117);
+            textBox1.Location = new Point(183, 117);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(45, 23);
             textBox1.TabIndex = 3;
@@ -70,18 +74,31 @@
             // 
             // button1
             // 
-            button1.Location = new Point(361, 363);
+            button1.Enabled = false;
+            button1.Location = new Point(514, 117);
             button1.Name = "button1";
             button1.Size = new Size(93, 23);
             button1.TabIndex = 5;
             button1.Text = "Process video";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(361, 117);
+            button3.Name = "button3";
+            button3.Size = new Size(75, 23);
+            button3.TabIndex = 6;
+            button3.Text = "Refresh";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(button3);
             Controls.Add(button1);
             Controls.Add(button2);
             Controls.Add(textBox1);
@@ -100,5 +117,6 @@
         private TextBox textBox1;
         private Button button2;
         private Button button1;
+        private Button button3;
     }
 }

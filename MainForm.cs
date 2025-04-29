@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using DataViewerFront.Dtos;
 using DataViewerFront.Services;
 
@@ -10,17 +11,34 @@ namespace DataViewerFront
 
         private readonly VideoService _videoService;
 
-        private int _selectedVideoId;
+        private int? _selectedVideoId;
 
         public MainForm()
         {
             InitializeComponent();
             _videoService = new VideoService();
+            _selectedVideoId = null;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             Console.WriteLine("aaaaaa");
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow selectedRow = dataGridView1.Rows[e.RowIndex];
+
+                // Ejemplo: obtener el valor de la primera celda (columna 0)
+                var selectedItem = selectedRow.DataBoundItem as ResponseVideoDto;
+
+                _selectedVideoId = selectedItem.VideoId;
+
+                button1.Enabled = true;
+
+            }
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -52,11 +70,23 @@ namespace DataViewerFront
                 totalWidth += column.Width;
             }
 
-            dataGridView1.Height = totalHeight + dataGridView1.ColumnHeadersHeight;  
+            dataGridView1.Height = totalHeight + dataGridView1.ColumnHeadersHeight;
             dataGridView1.Width = totalWidth + dataGridView1.RowHeadersWidth;
         }
 
         private async void PopUpUploadVideo_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            await LoadVideos();
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            await _videoService.ProcessVideo(_selectedVideoId);
+            await LoadVideos();
+            MessageBox.Show("Video processing started.");
+        }
+
+        private async Task button3_Click(object sender, EventArgs e)
         {
             await LoadVideos();
         }
