@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using DataViewerFront.Dtos;
+﻿using DataViewerFront.Dtos;
 using DataViewerFront.Services;
 using LibVLCSharp.Shared;
 using LibVLCSharp.WinForms;
@@ -24,7 +15,10 @@ namespace DataViewerFront
         private string _videoPath;
         private MediaPlayer _mediaPlayer;
         private LibVLC _libVLC;
-        private VideoView _videoView;
+        private Button _playButton;
+        private Button _pauseButton;
+        private Button _stopButton;
+        private TrackBar _progressBar;
 
         public VideoPlayerForm(int? videoId)
         {
@@ -35,7 +29,6 @@ namespace DataViewerFront
             _videoId = videoId;
             _libVLC = new LibVLC();
             _mediaPlayer = new MediaPlayer(_libVLC);
-            _videoView = null;
         }
 
         private async void VideoPlayerForm_Load(object sender, EventArgs e)
@@ -47,23 +40,18 @@ namespace DataViewerFront
             try
             {
                 Core.Initialize();
-                _videoView = new VideoView
-                {
-                    MediaPlayer = _mediaPlayer,
-                    Dock = DockStyle.Left,
-                    Width = this.ClientSize.Width / 2
-                };
-                _videoView.MediaPlayer = _mediaPlayer;
+                videoView1.MediaPlayer = _mediaPlayer;
 
-                Controls.Add(_videoView);
+                Controls.Add(videoView1);
 
                 var media = new Media(_libVLC, new Uri(_videoPath));
                 _mediaPlayer.Play(media);
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception("Error loading player");
             }
-            
+
             Console.WriteLine("data");
         }
 
@@ -103,19 +91,52 @@ namespace DataViewerFront
             {
                 TreeNode driverNode = new TreeNode(driver);
                 TreeNode onboardNode = new TreeNode("Onboards");
-                foreach(var timestamp in _processedVideoData[driver].onboardTimestamps)
+                foreach (var timestamp in _processedVideoData[driver].onboardTimestamps)
                 {
-                    onboardNode.Nodes.Add(timestamp.ToString());
+                    onboardNode.Nodes.Add(ConvertSecondsToTimeFormat(timestamp));
                 }
                 TreeNode batteryNode = new TreeNode("Battery");
                 foreach (var timestamp in _processedVideoData[driver].batteryTimestamps)
                 {
-                    batteryNode.Nodes.Add(timestamp.ToString());
+                    batteryNode.Nodes.Add(ConvertSecondsToTimeFormat(timestamp));
                 }
                 driverNode.Nodes.Add(onboardNode);
-                driverNode.Nodes.Add(batteryNode);  
+                driverNode.Nodes.Add(batteryNode);
                 treeView1.Nodes.Add(driverNode);
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            _mediaPlayer.Pause();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            _mediaPlayer.Play();
+        }
+
+        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.Parent != null
+                && (e.Node.Parent.Text == "Onboards" || e.Node.Parent.Text == "Battery"))
+            {
+                if (TimeSpan.TryParse(e.Node.Text, out TimeSpan time))
+                {
+                    _mediaPlayer.SeekTo(time);
+
+                }
+                else
+                {
+                    MessageBox.Show($"Formato de tiempo no válido: {e.Node.Text}\nUsa hh:mm:ss");
+                }
+            }
+        }
+
+        private string ConvertSecondsToTimeFormat(int seconds)
+        {
+            TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
+            return timeSpan.ToString(@"hh\:mm\:ss");
         }
     }
 }
