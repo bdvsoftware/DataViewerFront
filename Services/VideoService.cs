@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using System.Security.Cryptography;
 using System.Text.Json;
 using DataViewerFront.Dtos;
 using DataViewerFront.Utils;
@@ -61,6 +62,61 @@ namespace DataViewerFront.Services
             }else
             {
                 throw new Exception("No video selected");
+            }
+        }
+
+        public async Task<Dictionary<string, DriverVideoDto>> GetVideoData(int? videoId)
+        {
+            if (videoId != null)
+            {
+                var response = await _httpClient.GetAsync(_videoUrl + "/data/" + videoId);
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var data = JsonSerializer.Deserialize<Dictionary<string, DriverVideoDto>>(json, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+                    return data;
+                }
+                return null;
+            }
+            else
+            {
+                throw new Exception("No video selected"); ;
+            }
+        }
+
+        public async Task<string> DownloadVideoAsync(int? videoId)
+        {
+            try
+            {
+                string projectTempPath = Path.Combine("C:/racing/DataViewerFront/Temp/");
+
+                Directory.CreateDirectory(projectTempPath);
+
+                string filePath = "";
+
+                using (HttpResponseMessage response = await _httpClient.GetAsync(_videoUrl + "/download/" + videoId))
+                {
+                    response.EnsureSuccessStatusCode();
+
+                    var fileName = response.Content.Headers.ContentDisposition.FileName?.Trim('"') ?? "default.mp4";
+
+                    filePath = Path.Combine(projectTempPath, fileName);
+
+                    using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        await response.Content.CopyToAsync(fs);
+                    }
+                }
+
+                MessageBox.Show($"Video descargado correctamente en: {filePath}");
+                return filePath;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Error downloading video");
             }
         }
     }

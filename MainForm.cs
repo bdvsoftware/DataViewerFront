@@ -22,11 +22,6 @@ namespace DataViewerFront
             _selectedVideoId = null;
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            Console.WriteLine("aaaaaa");
-        }
-
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -39,6 +34,16 @@ namespace DataViewerFront
                 _selectedVideoId = selectedItem.VideoId;
 
                 button1.Enabled = true;
+
+                if (dataGridView1.Columns[e.ColumnIndex].Name == "PlayIcon")
+                {
+                    var row = dataGridView1.Rows[e.RowIndex];
+                    if (row.DataBoundItem is ResponseVideoDto video && video.ShowPlayer)
+                    {
+                        var videoPlayer = new VideoPlayerForm(_selectedVideoId);
+                        videoPlayer.Show();
+                    }
+                }
 
             }
         }

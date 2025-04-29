@@ -52,7 +52,6 @@ namespace DataViewerFront
             dataGridView1.Size = new Size(424, 150);
             dataGridView1.TabIndex = 2;
             dataGridView1.CellClick += dataGridView1_CellClick;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // textBox1
             // 
