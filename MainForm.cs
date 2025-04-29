@@ -1,3 +1,5 @@
+using System.Resources;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using DataViewerFront.Dtos;
 using DataViewerFront.Services;
@@ -56,22 +58,51 @@ namespace DataViewerFront
         private async Task LoadVideos()
         {
             _videos = await _videoService.GetVideos();
+            dataGridView1.DataSource = null;
+            dataGridView1.Columns.Clear();
+
             dataGridView1.DataSource = _videos;
+
             dataGridView1.Columns["VideoId"].Visible = false;
-            dataGridView1.Columns["SessionId"].Visible = false; int totalHeight = 0;
+            dataGridView1.Columns["SessionId"].Visible = false;
+            dataGridView1.Columns["ShowPlayer"].Visible = false;
+            Image playIcon = Image.FromFile("C:/racing/DataViewerFront/Resources/Img/play.png");
+
+
+            var iconColumn = new DataGridViewImageColumn
+            {
+                Name = "PlayIcon",
+                HeaderText = "Player",
+                ImageLayout = DataGridViewImageCellLayout.Zoom,
+                Width = 50
+
+            };
+            iconColumn.DefaultCellStyle.NullValue = null;
+            dataGridView1.Columns.Add(iconColumn);
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.DataBoundItem is ResponseVideoDto video && video.ShowPlayer)
+                {
+                    row.Cells["PlayIcon"].Value = video.ShowPlayer ? playIcon : null;
+                }
+            }
+
+            // Ajustar tamaño del DataGridView
+            int totalHeight = dataGridView1.ColumnHeadersHeight;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 totalHeight += row.Height;
             }
 
-            int totalWidth = 0;
+            int totalWidth = dataGridView1.RowHeadersWidth;
             foreach (DataGridViewColumn column in dataGridView1.Columns)
             {
                 totalWidth += column.Width;
             }
 
-            dataGridView1.Height = totalHeight + dataGridView1.ColumnHeadersHeight;
-            dataGridView1.Width = totalWidth + dataGridView1.RowHeadersWidth;
+            dataGridView1.Height = totalHeight;
+            dataGridView1.Width = totalWidth;
         }
 
         private async void PopUpUploadVideo_FormClosed(object sender, FormClosedEventArgs e)
@@ -86,7 +117,7 @@ namespace DataViewerFront
             MessageBox.Show("Video processing started.");
         }
 
-        private async Task button3_Click(object sender, EventArgs e)
+        private async void button3_Click(object sender, EventArgs e)
         {
             await LoadVideos();
         }

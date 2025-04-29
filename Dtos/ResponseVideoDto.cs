@@ -15,8 +15,9 @@ namespace DataViewerFront.Dtos
         public DateOnly Date { get; set; }
         public string GpName { get; set; }
         public string Status { get; set; }
+        public bool ShowPlayer { get; set; }
 
-        public ResponseVideoDto(int videoId, string videoName, int sessionId, string sessionName, DateOnly date, string gpName, string status)
+        public ResponseVideoDto(int videoId, string videoName, int sessionId, string sessionName, DateOnly date, string gpName, string status, bool showPlayer)
         {
             VideoId = videoId;
             VideoName = videoName;
@@ -25,6 +26,7 @@ namespace DataViewerFront.Dtos
             Date = date;
             GpName = gpName;
             Status = status;
+            ShowPlayer = showPlayer;
         }
     }
 }
