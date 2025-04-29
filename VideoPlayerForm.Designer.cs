@@ -37,7 +37,6 @@
             treeView1.Name = "treeView1";
             treeView1.Size = new Size(250, 426);
             treeView1.TabIndex = 0;
-            treeView1.AfterSelect += treeView1_AfterSelect;
             // 
             // VideoPlayerForm
             // 

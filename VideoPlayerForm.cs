@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DataViewerFront.Dtos;
 using DataViewerFront.Services;
+using LibVLCSharp.Shared;
+using LibVLCSharp.WinForms;
 
 namespace DataViewerFront
 {
@@ -20,6 +22,9 @@ namespace DataViewerFront
         private Dictionary<string, DriverVideoDto> _videoData;
         private Dictionary<string, DriverData> _processedVideoData;
         private string _videoPath;
+        private MediaPlayer _mediaPlayer;
+        private LibVLC _libVLC;
+        private VideoView _videoView;
 
         public VideoPlayerForm(int? videoId)
         {
@@ -28,6 +33,9 @@ namespace DataViewerFront
             _processedVideoData = new Dictionary<string, DriverData>();
             _videoPath = "";
             _videoId = videoId;
+            _libVLC = new LibVLC();
+            _mediaPlayer = new MediaPlayer(_libVLC);
+            _videoView = null;
         }
 
         private async void VideoPlayerForm_Load(object sender, EventArgs e)
@@ -36,6 +44,26 @@ namespace DataViewerFront
             _videoPath = await _videoService.DownloadVideoAsync(_videoId);
             processVideoData();
             populateTreeView();
+            try
+            {
+                Core.Initialize();
+                _videoView = new VideoView
+                {
+                    MediaPlayer = _mediaPlayer,
+                    Dock = DockStyle.Left,
+                    Width = this.ClientSize.Width / 2
+                };
+                _videoView.MediaPlayer = _mediaPlayer;
+
+                Controls.Add(_videoView);
+
+                var media = new Media(_libVLC, new Uri(_videoPath));
+                _mediaPlayer.Play(media);
+            }catch (Exception ex)
+            {
+                throw new Exception("Error loading player");
+            }
+            
             Console.WriteLine("data");
         }
 
@@ -88,11 +116,6 @@ namespace DataViewerFront
                 driverNode.Nodes.Add(batteryNode);  
                 treeView1.Nodes.Add(driverNode);
             }
-        }
-
-        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-
         }
     }
 }
