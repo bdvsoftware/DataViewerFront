@@ -11,8 +11,8 @@ namespace DataViewerFront
         private readonly VideoService _videoService;
         private readonly int? _videoId;
         private Dictionary<string, DriverVideoDto> _videoData;
-        private Dictionary<string, DriverData> _processedVideoData;
         private string _videoPath;
+        private List<string> _drivers;
         private MediaPlayer _mediaPlayer;
         private LibVLC _libVLC;
         private Button _playButton;
@@ -24,8 +24,8 @@ namespace DataViewerFront
         {
             InitializeComponent();
             _videoService = new VideoService();
-            _processedVideoData = new Dictionary<string, DriverData>();
             _videoPath = "";
+            _drivers = new List<string>();
             _videoId = videoId;
             _libVLC = new LibVLC();
             _mediaPlayer = new MediaPlayer(_libVLC);
@@ -34,9 +34,12 @@ namespace DataViewerFront
         private async void VideoPlayerForm_Load(object sender, EventArgs e)
         {
             _videoData = await _videoService.GetVideoData(_videoId);
+            _drivers = _videoData.Keys.ToList();
+            comboBox1.DataSource = _drivers;
+            dataGridView1.Visible = false;
+            dataGridView2.Visible = false;
+            LoadTablesData();
             _videoPath = await _videoService.DownloadVideoAsync(_videoId);
-            processVideoData();
-            populateTreeView();
             try
             {
                 Core.Initialize();
@@ -53,57 +56,6 @@ namespace DataViewerFront
             }
 
             Console.WriteLine("data");
-        }
-
-        private void processVideoData()
-        {
-            foreach (var driver in _videoData.Keys)
-            {
-                var onboardData = _videoData[driver].DriverOnboardDto;
-                var batteryData = _videoData[driver].DriverBatteryDto;
-
-                var timestampsOnboards = new List<int>();
-                var timestampsBattery = new List<int>();
-
-                if (onboardData != null)
-                {
-                    foreach (var onboardFrame in onboardData)
-                    {
-                        timestampsOnboards.Add(onboardFrame.Timestamp);
-                    }
-                }
-                if (batteryData != null)
-                {
-                    foreach (var batteryFrame in batteryData)
-                    {
-                        timestampsBattery.Add(batteryFrame.Timestamp);
-                    }
-                }
-                var data = new DriverData(timestampsOnboards, timestampsBattery);
-                _processedVideoData.TryAdd(driver, data);
-            }
-        }
-
-        private void populateTreeView()
-        {
-            treeView1.Nodes.Clear();
-            foreach (var driver in _processedVideoData.Keys)
-            {
-                TreeNode driverNode = new TreeNode(driver);
-                TreeNode onboardNode = new TreeNode("Onboards");
-                foreach (var timestamp in _processedVideoData[driver].onboardTimestamps)
-                {
-                    onboardNode.Nodes.Add(ConvertSecondsToTimeFormat(timestamp));
-                }
-                TreeNode batteryNode = new TreeNode("Battery");
-                foreach (var timestamp in _processedVideoData[driver].batteryTimestamps)
-                {
-                    batteryNode.Nodes.Add(ConvertSecondsToTimeFormat(timestamp));
-                }
-                driverNode.Nodes.Add(onboardNode);
-                driverNode.Nodes.Add(batteryNode);
-                treeView1.Nodes.Add(driverNode);
-            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -133,10 +85,82 @@ namespace DataViewerFront
             }
         }
 
-        private string ConvertSecondsToTimeFormat(int seconds)
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
-            return timeSpan.ToString(@"hh\:mm\:ss");
+            LoadTablesData();
+        }
+
+        private void LoadTablesData()
+        {
+            var driver = comboBox1.SelectedItem.ToString();
+            var driverData = _videoData[driver];
+
+            var onboardData = driverData.DriverOnboardRangeDto;
+            var batteryData = driverData.DriverBatteryRangeDto;
+
+            if (onboardData.Any())
+            {
+                dataGridView1.DataSource = onboardData;
+                dataGridView1.Columns["OnboardFrameId"].Visible = false;
+                dataGridView1.Columns["TimeRange"].HeaderText = "Time";
+                dataGridView1.Visible = true;
+                int totalWidth = dataGridView1.RowHeadersVisible ? dataGridView1.RowHeadersWidth : 0;
+                foreach (DataGridViewColumn column in dataGridView1.Columns)
+                {
+                    totalWidth += column.Width;
+                }
+
+                int totalHeight = dataGridView1.ColumnHeadersVisible ? dataGridView1.ColumnHeadersHeight : 0;
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    totalHeight += row.Height;
+                }
+
+                dataGridView1.Size = new Size(totalWidth, totalHeight);
+            }
+            if (batteryData.Any())
+            {
+                dataGridView2.DataSource = batteryData;
+                dataGridView2.Columns["FrameId"].Visible = false;
+                dataGridView2.Columns["BatteryFrameId"].Visible = false;
+                dataGridView2.Columns["TimeRange"].HeaderText = "Time";
+                dataGridView2.Visible = true;
+                int totalWidth = dataGridView2.RowHeadersVisible ? dataGridView2.RowHeadersWidth : 0;
+                foreach (DataGridViewColumn column in dataGridView2.Columns)
+                {
+                    totalWidth += column.Width;
+                }
+
+                int totalHeight = dataGridView2.ColumnHeadersVisible ? dataGridView2.ColumnHeadersHeight : 0;
+                foreach (DataGridViewRow row in dataGridView2.Rows)
+                {
+                    totalHeight += row.Height;
+                }
+
+                dataGridView2.Size = new Size(totalWidth, totalHeight);
+            }
+        }
+
+        public void DataGridView2_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if(e.ColumnIndex != null && e.ColumnIndex.Equals(6))
+            {
+                var value = dataGridView2.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                var startTime = value.Split(new[] { " - " }, StringSplitOptions.None)[0];
+                var timeSpan = TimeSpan.Parse(startTime);
+                _mediaPlayer.SeekTo(timeSpan);
+            }
+        }
+
+        public void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex != null && e.ColumnIndex.Equals(4))
+            {
+                var value = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                var startTime = value.Split(new[] { " - " }, StringSplitOptions.None)[0];
+                var timeSpan = TimeSpan.Parse(startTime);
+                _mediaPlayer.SeekTo(timeSpan);
+            }
         }
     }
 }
