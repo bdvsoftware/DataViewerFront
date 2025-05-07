@@ -164,6 +164,10 @@ namespace DataViewerFront
                 var startTime = value.Split(new[] { " - " }, StringSplitOptions.None)[0];
                 var timeSpan = TimeSpan.Parse(startTime);
                 _mediaPlayer.SeekTo(timeSpan);
+                long currentTime = _mediaPlayer.Time;
+                labelCurrentTime.Text = TimeSpan.FromMilliseconds(currentTime).ToString(@"hh\:mm\:ss");
+                float position = _mediaPlayer.Position;
+                trackBar1.Value = Math.Min(trackBar1.Maximum, (int)(position * trackBar1.Maximum));
             }
         }
 
