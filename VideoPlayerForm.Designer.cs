@@ -28,15 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             videoView1 = new LibVLCSharp.WinForms.VideoView();
             button1 = new Button();
             button2 = new Button();
             comboBox1 = new ComboBox();
             dataGridView1 = new DataGridView();
             dataGridView2 = new DataGridView();
+            labelCurrentTime = new Label();
+            labelTotalTime = new Label();
+            timer1 = new System.Windows.Forms.Timer { Interval = 150 };
+            timer1.Tick += Timer_Tick;
+            trackBar1 = new TrackBar();
             ((System.ComponentModel.ISupportInitialize)videoView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
             SuspendLayout();
             // 
             // videoView1
@@ -98,11 +105,43 @@
             dataGridView2.TabIndex = 6;
             dataGridView2.CellClick += DataGridView2_CellClick;
             // 
+            // labelCurrentTime
+            // 
+            labelCurrentTime.AutoSize = true;
+            labelCurrentTime.Location = new Point(190, 675);
+            labelCurrentTime.Name = "labelCurrentTime";
+            labelCurrentTime.Size = new Size(49, 15);
+            labelCurrentTime.TabIndex = 8;
+            labelCurrentTime.Text = "00:00:00";
+            // 
+            // labelTotalTime
+            // 
+            labelTotalTime.AutoSize = true;
+            labelTotalTime.Location = new Point(1124, 675);
+            labelTotalTime.Name = "labelTotalTime";
+            labelTotalTime.Size = new Size(49, 15);
+            labelTotalTime.TabIndex = 9;
+            labelTotalTime.Text = "00:00:00";
+            // 
+            // trackBar1
+            // 
+            trackBar1.LargeChange = 1;
+            trackBar1.Location = new Point(244, 675);
+            trackBar1.Maximum = 100;
+            trackBar1.Name = "trackBar1";
+            trackBar1.Size = new Size(862, 45);
+            trackBar1.TabIndex = 10;
+            trackBar1.MouseDown += trackBar1_MouseDown;
+            trackBar1.MouseUp += trackBar1_MouseUp;
+            // 
             // VideoPlayerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1920, 1080);
+            Controls.Add(trackBar1);
+            Controls.Add(labelTotalTime);
+            Controls.Add(labelCurrentTime);
             Controls.Add(dataGridView2);
             Controls.Add(dataGridView1);
             Controls.Add(comboBox1);
@@ -115,7 +154,9 @@
             ((System.ComponentModel.ISupportInitialize)videoView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -125,5 +166,9 @@
         private ComboBox comboBox1;
         private DataGridView dataGridView1;
         private DataGridView dataGridView2;
+        private Label labelCurrentTime;
+        private Label labelTotalTime;
+        private System.Windows.Forms.Timer timer1;
+        private TrackBar trackBar1;
     }
 }

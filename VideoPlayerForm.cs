@@ -15,10 +15,7 @@ namespace DataViewerFront
         private List<string> _drivers;
         private MediaPlayer _mediaPlayer;
         private LibVLC _libVLC;
-        private Button _playButton;
-        private Button _pauseButton;
-        private Button _stopButton;
-        private TrackBar _progressBar;
+        private bool _isDragging = false;
 
         public VideoPlayerForm(int? videoId)
         {
@@ -40,6 +37,10 @@ namespace DataViewerFront
             dataGridView2.Visible = false;
             LoadTablesData();
             _videoPath = await _videoService.DownloadVideoAsync(_videoId);
+
+            timer1.Start();
+
+
             try
             {
                 Core.Initialize();
@@ -49,6 +50,9 @@ namespace DataViewerFront
 
                 var media = new Media(_libVLC, new Uri(_videoPath));
                 _mediaPlayer.Play(media);
+
+                labelCurrentTime.Text = TimeSpan.FromMilliseconds(0).ToString(@"hh\:mm\:ss");
+                labelTotalTime.Text = TimeSpan.FromMilliseconds(_mediaPlayer.Position).ToString(@"hh\:mm\:ss");
             }
             catch (Exception ex)
             {
@@ -143,7 +147,7 @@ namespace DataViewerFront
 
         public void DataGridView2_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.ColumnIndex != null && e.ColumnIndex.Equals(6))
+            if (e.ColumnIndex != null && e.ColumnIndex.Equals(6))
             {
                 var value = dataGridView2.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
                 var startTime = value.Split(new[] { " - " }, StringSplitOptions.None)[0];
@@ -161,6 +165,35 @@ namespace DataViewerFront
                 var timeSpan = TimeSpan.Parse(startTime);
                 _mediaPlayer.SeekTo(timeSpan);
             }
+        }
+
+        public void Timer_Tick(object sender, EventArgs e)
+        {
+            if (_mediaPlayer == null || !_mediaPlayer.IsPlaying || _isDragging)
+                return;
+
+            long currentTime = _mediaPlayer.Time;
+            long totalTime = _mediaPlayer.Length;
+            labelCurrentTime.Text = TimeSpan.FromMilliseconds(currentTime).ToString(@"hh\:mm\:ss");
+            labelTotalTime.Text = TimeSpan.FromMilliseconds(totalTime).ToString(@"hh\:mm\:ss");
+
+            if (totalTime > 0)
+            {
+                float position = _mediaPlayer.Position;
+                trackBar1.Value = Math.Min(trackBar1.Maximum, (int)(position * trackBar1.Maximum));
+            }
+        }
+
+        public void trackBar1_MouseDown(object sender, EventArgs e)
+        {
+            _isDragging = true;
+        }
+
+        public void trackBar1_MouseUp(object sender, EventArgs e)
+        {
+            _isDragging = false;
+            var position = (float)trackBar1.Value / trackBar1.Maximum;
+            _mediaPlayer.Position = position;
         }
     }
 }
