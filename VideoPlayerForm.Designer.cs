@@ -37,9 +37,10 @@
             dataGridView2 = new DataGridView();
             labelCurrentTime = new Label();
             labelTotalTime = new Label();
-            timer1 = new System.Windows.Forms.Timer { Interval = 150 };
-            timer1.Tick += Timer_Tick;
+            timer1 = new System.Windows.Forms.Timer(components);
             trackBar1 = new TrackBar();
+            onboardsLabel = new Label();
+            batteryLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)videoView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
@@ -87,9 +88,10 @@
             // 
             // dataGridView1
             // 
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(1336, 156);
+            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView1.Location = new Point(1284, 158);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(276, 198);
             dataGridView1.TabIndex = 5;
@@ -97,9 +99,10 @@
             // 
             // dataGridView2
             // 
-            dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView2.Location = new Point(1336, 437);
+            dataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView2.Location = new Point(1284, 437);
             dataGridView2.Name = "dataGridView2";
             dataGridView2.Size = new Size(276, 198);
             dataGridView2.TabIndex = 6;
@@ -123,6 +126,10 @@
             labelTotalTime.TabIndex = 9;
             labelTotalTime.Text = "00:00:00";
             // 
+            // timer1
+            // 
+            timer1.Tick += Timer_Tick;
+            // 
             // trackBar1
             // 
             trackBar1.LargeChange = 1;
@@ -134,11 +141,31 @@
             trackBar1.MouseDown += trackBar1_MouseDown;
             trackBar1.MouseUp += trackBar1_MouseUp;
             // 
+            // onboardsLabel
+            // 
+            onboardsLabel.AutoSize = true;
+            onboardsLabel.Location = new Point(1602, 126);
+            onboardsLabel.Name = "onboardsLabel";
+            onboardsLabel.Size = new Size(62, 15);
+            onboardsLabel.TabIndex = 11;
+            onboardsLabel.Text = "Onboards:";
+            // 
+            // batteryLabel
+            // 
+            batteryLabel.AutoSize = true;
+            batteryLabel.Location = new Point(1602, 399);
+            batteryLabel.Name = "batteryLabel";
+            batteryLabel.Size = new Size(47, 15);
+            batteryLabel.TabIndex = 12;
+            batteryLabel.Text = "Battery:";
+            // 
             // VideoPlayerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1920, 1080);
+            Controls.Add(batteryLabel);
+            Controls.Add(onboardsLabel);
             Controls.Add(trackBar1);
             Controls.Add(labelTotalTime);
             Controls.Add(labelCurrentTime);
@@ -170,5 +197,7 @@
         private Label labelTotalTime;
         private System.Windows.Forms.Timer timer1;
         private TrackBar trackBar1;
+        private Label onboardsLabel;
+        private Label batteryLabel;
     }
 }

@@ -1,4 +1,5 @@
-﻿using DataViewerFront.Dtos;
+﻿using System.Collections.Generic;
+using DataViewerFront.Dtos;
 using DataViewerFront.Services;
 using LibVLCSharp.Shared;
 using LibVLCSharp.WinForms;
@@ -31,7 +32,8 @@ namespace DataViewerFront
         private async void VideoPlayerForm_Load(object sender, EventArgs e)
         {
             _videoData = await _videoService.GetVideoData(_videoId);
-            _drivers = _videoData.Keys.ToList();
+            _drivers.Add("All");
+            _drivers.AddRange(_videoData.Keys.ToList());
             comboBox1.DataSource = _drivers;
             dataGridView1.Visible = false;
             dataGridView2.Visible = false;
@@ -39,7 +41,6 @@ namespace DataViewerFront
             _videoPath = await _videoService.DownloadVideoAsync(_videoId);
 
             timer1.Start();
-
 
             try
             {
@@ -97,17 +98,38 @@ namespace DataViewerFront
         private void LoadTablesData()
         {
             var driver = comboBox1.SelectedItem.ToString();
-            var driverData = _videoData[driver];
+            if(driver.Equals("All"))
+            {
+                LoadAllDriversData();
+            }
+            else
+            {
+                LoadDataDriver(driver);
+            }
+            
+        }
 
-            var onboardData = driverData.DriverOnboardRangeDto;
-            var batteryData = driverData.DriverBatteryRangeDto;
-
+        private void LoadAllDriversData()
+        {
+            var onboardData = new List<DriverOnboardRangeDto>();
+            var batteryData = new List<DriverBatteryRangeDto>();
+            foreach(var driver in _videoData.Keys)
+            {
+                if (_videoData[driver] != null && _videoData[driver].DriverOnboardRangeDto != null)
+                {
+                    onboardData.AddRange(_videoData[driver].DriverOnboardRangeDto);
+                }
+                if (_videoData[driver] != null && _videoData[driver].DriverBatteryRangeDto != null)
+                {
+                    batteryData.AddRange(_videoData[driver].DriverBatteryRangeDto);
+                }
+            }
+            dataGridView1.DataSource = onboardData;
+            dataGridView1.Columns["OnboardFrameId"].Visible = false;
+            dataGridView1.Columns["TimeRange"].HeaderText = "Time";
+            dataGridView1.Columns["TeamName"].Visible = false;
             if (onboardData.Any())
             {
-                dataGridView1.DataSource = onboardData;
-                dataGridView1.Columns["OnboardFrameId"].Visible = false;
-                dataGridView1.Columns["TimeRange"].HeaderText = "Time";
-                dataGridView1.Visible = true;
                 int totalWidth = dataGridView1.RowHeadersVisible ? dataGridView1.RowHeadersWidth : 0;
                 foreach (DataGridViewColumn column in dataGridView1.Columns)
                 {
@@ -119,16 +141,17 @@ namespace DataViewerFront
                 {
                     totalHeight += row.Height;
                 }
-
                 dataGridView1.Size = new Size(totalWidth, totalHeight);
+                dataGridView1.Width = totalWidth;
+                dataGridView1.Height = totalHeight;
+                dataGridView1.Visible = true;
             }
+            dataGridView2.DataSource = batteryData;
+            dataGridView2.Columns["FrameId"].Visible = false;
+            dataGridView2.Columns["BatteryFrameId"].Visible = false;
+            dataGridView2.Columns["TimeRange"].HeaderText = "Time";
             if (batteryData.Any())
             {
-                dataGridView2.DataSource = batteryData;
-                dataGridView2.Columns["FrameId"].Visible = false;
-                dataGridView2.Columns["BatteryFrameId"].Visible = false;
-                dataGridView2.Columns["TimeRange"].HeaderText = "Time";
-                dataGridView2.Visible = true;
                 int totalWidth = dataGridView2.RowHeadersVisible ? dataGridView2.RowHeadersWidth : 0;
                 foreach (DataGridViewColumn column in dataGridView2.Columns)
                 {
@@ -140,9 +163,60 @@ namespace DataViewerFront
                 {
                     totalHeight += row.Height;
                 }
-
                 dataGridView2.Size = new Size(totalWidth, totalHeight);
+                dataGridView2.Width = totalWidth;
+                dataGridView2.Height = totalHeight;
+                dataGridView2.Visible = true;
             }
+        }
+
+        private void LoadDataDriver(string driver)
+        {
+            var driverData = _videoData[driver];
+
+            var onboardData = driverData.DriverOnboardRangeDto;
+            var batteryData = driverData.DriverBatteryRangeDto;
+
+            if (onboardData.Any())
+            {
+                LoadOnboardTable(onboardData);
+            }
+            else
+            {
+                dataGridView1.Visible = false;
+                onboardsLabel.Visible = false;
+            }
+            if (batteryData.Any())
+            {
+                LoadBatteryTable(batteryData);
+            }
+            else
+            {
+                dataGridView2.Visible = false;
+                batteryLabel.Visible = false;
+            }
+        }
+
+        private void LoadOnboardTable(IEnumerable<DriverOnboardRangeDto> onboardData)
+        {
+            dataGridView1.DataSource = onboardData;
+            dataGridView1.Columns["OnboardFrameId"].Visible = false;
+            dataGridView1.Columns["TimeRange"].HeaderText = "Time";
+            dataGridView1.Columns["TeamName"].Visible = false;
+            dataGridView1.Visible = true;
+            dataGridView1.Visible = true;
+            onboardsLabel.Visible = true;
+        }
+
+        private void LoadBatteryTable(IEnumerable<DriverBatteryRangeDto> batteryData)
+        {
+            dataGridView2.DataSource = batteryData;
+            dataGridView2.Columns["FrameId"].Visible = false;
+            dataGridView2.Columns["BatteryFrameId"].Visible = false;
+            dataGridView2.Columns["TimeRange"].HeaderText = "Time";
+            dataGridView2.Visible = true;
+            dataGridView2.Visible = true;
+            batteryLabel.Visible = true;
         }
 
         public void DataGridView2_CellClick(object sender, DataGridViewCellEventArgs e)

@@ -13,10 +13,10 @@ namespace DataViewerFront.Dtos
         public int FrameId { get; set; }
         public int BatteryFrameId { get; set; }
         public int? Lap { get; set; }
-        public int Status { get; set; }
+        public String Status { get; set; }
         public string TimeRange { get; set; }
 
-        public DriverBatteryRangeDto(string driverName, string driverAbbreviation, string timeRange, int frameId, int batteryFrameId, int? lap, int status)
+        public DriverBatteryRangeDto(string driverName, string driverAbbreviation, string timeRange, int frameId, int batteryFrameId, int? lap, string status)
         {
             DriverName = driverName;
             DriverAbbreviation = driverAbbreviation;
