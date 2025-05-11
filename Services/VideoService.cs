@@ -22,7 +22,7 @@ namespace DataViewerFront.Services
                 using var form = new MultipartFormDataContent();
                 using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
 
-                var streamContent = new ProgressableStreamContent(fileStream, 4096, progressCallback);
+                var streamContent = new ProgressableStreamContent(fileStream, 65536, progressCallback);
                 streamContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                 form.Add(streamContent, "file", Path.GetFileName(filePath));
                 form.Add(new StringContent(gpName), "grandPrixName");

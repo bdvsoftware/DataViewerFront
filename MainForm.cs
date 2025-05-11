@@ -117,9 +117,10 @@ namespace DataViewerFront
 
         private async void button1_Click(object sender, EventArgs e)
         {
+
+            MessageBox.Show("Video processing started. It could take some minutes, depending on file size.");
             await _videoService.ProcessVideo(_selectedVideoId);
             await LoadVideos();
-            MessageBox.Show("Video processing started.");
         }
 
         private async void button3_Click(object sender, EventArgs e)
