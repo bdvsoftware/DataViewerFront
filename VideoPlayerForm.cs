@@ -38,8 +38,7 @@ namespace DataViewerFront
             dataGridView1.Visible = false;
             dataGridView2.Visible = false;
             LoadTablesData();
-            _videoPath = await _videoService.DownloadVideoAsync(_videoId);
-
+            _videoPath = await _videoService.GetVideoPath(_videoId);
             timer1.Start();
 
             try

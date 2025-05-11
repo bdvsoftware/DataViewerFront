@@ -119,5 +119,12 @@ namespace DataViewerFront.Services
                 throw new Exception("Error downloading video");
             }
         }
+
+        public async Task<string> GetVideoPath(int? videoId)
+        {
+            var response = await _httpClient.GetAsync(_videoUrl + "/path/" + videoId);
+            var path = await response.Content.ReadAsStringAsync();
+            return path;
+        }
     }
 }
