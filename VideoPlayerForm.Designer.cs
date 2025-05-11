@@ -41,6 +41,8 @@
             trackBar1 = new TrackBar();
             onboardsLabel = new Label();
             batteryLabel = new Label();
+            button3 = new Button();
+            button4 = new Button();
             ((System.ComponentModel.ISupportInitialize)videoView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
@@ -89,9 +91,9 @@
             // dataGridView1
             // 
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridView1.Location = new Point(1284, 158);
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(1478, 156);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(276, 198);
             dataGridView1.TabIndex = 5;
@@ -100,11 +102,11 @@
             // dataGridView2
             // 
             dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridView2.Location = new Point(1284, 437);
+            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView2.Location = new Point(1431, 446);
             dataGridView2.Name = "dataGridView2";
-            dataGridView2.Size = new Size(276, 198);
+            dataGridView2.Size = new Size(371, 198);
             dataGridView2.TabIndex = 6;
             dataGridView2.CellClick += DataGridView2_CellClick;
             // 
@@ -159,11 +161,33 @@
             batteryLabel.TabIndex = 12;
             batteryLabel.Text = "Battery:";
             // 
+            // button3
+            // 
+            button3.Location = new Point(563, 728);
+            button3.Name = "button3";
+            button3.Size = new Size(75, 23);
+            button3.TabIndex = 13;
+            button3.Text = "+5s";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(693, 728);
+            button4.Name = "button4";
+            button4.Size = new Size(75, 23);
+            button4.TabIndex = 14;
+            button4.Text = "-5s";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
             // VideoPlayerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1920, 1080);
+            Controls.Add(button4);
+            Controls.Add(button3);
             Controls.Add(batteryLabel);
             Controls.Add(onboardsLabel);
             Controls.Add(trackBar1);
@@ -199,5 +223,7 @@
         private TrackBar trackBar1;
         private Label onboardsLabel;
         private Label batteryLabel;
+        private Button button3;
+        private Button button4;
     }
 }

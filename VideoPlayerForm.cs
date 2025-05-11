@@ -97,7 +97,7 @@ namespace DataViewerFront
         private void LoadTablesData()
         {
             var driver = comboBox1.SelectedItem.ToString();
-            if(driver.Equals("All"))
+            if (driver.Equals("All"))
             {
                 LoadAllDriversData();
             }
@@ -105,14 +105,14 @@ namespace DataViewerFront
             {
                 LoadDataDriver(driver);
             }
-            
+
         }
 
         private void LoadAllDriversData()
         {
             var onboardData = new List<DriverOnboardRangeDto>();
             var batteryData = new List<DriverBatteryRangeDto>();
-            foreach(var driver in _videoData.Keys)
+            foreach (var driver in _videoData.Keys)
             {
                 if (_videoData[driver] != null && _videoData[driver].DriverOnboardRangeDto != null)
                 {
@@ -123,50 +123,52 @@ namespace DataViewerFront
                     batteryData.AddRange(_videoData[driver].DriverBatteryRangeDto);
                 }
             }
+            InitializeOnboardTable(onboardData);
+            if (onboardData.Any())
+            {
+                dataGridView1.Visible = true;
+            }
+            InitializeBatteryTable(batteryData);
+            if (batteryData.Any())
+            {
+                dataGridView2.Visible = true;
+            }
+        }
+
+        private void InitializeOnboardTable(List<DriverOnboardRangeDto> onboardData)
+        {
             dataGridView1.DataSource = onboardData;
             dataGridView1.Columns["OnboardFrameId"].Visible = false;
             dataGridView1.Columns["TimeRange"].HeaderText = "Time";
             dataGridView1.Columns["TeamName"].Visible = false;
-            if (onboardData.Any())
+            dataGridView1.Columns["DriverName"].Visible = false;
+            dataGridView1.Columns["DriverAbbreviation"].HeaderText = "Driver";
+            int totalHeight = dataGridView1.ColumnHeadersVisible ? dataGridView1.ColumnHeadersHeight : 0;
+            foreach (DataGridViewRow row in dataGridView1.Rows)
             {
-                int totalWidth = dataGridView1.RowHeadersVisible ? dataGridView1.RowHeadersWidth : 0;
-                foreach (DataGridViewColumn column in dataGridView1.Columns)
-                {
-                    totalWidth += column.Width;
-                }
-
-                int totalHeight = dataGridView1.ColumnHeadersVisible ? dataGridView1.ColumnHeadersHeight : 0;
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
-                    totalHeight += row.Height;
-                }
-                dataGridView1.Size = new Size(totalWidth, totalHeight);
-                dataGridView1.Width = totalWidth;
-                dataGridView1.Height = totalHeight;
-                dataGridView1.Visible = true;
+                totalHeight += row.Height;
             }
+            dataGridView1.Height = totalHeight;
+        }
+
+        private void InitializeBatteryTable(List<DriverBatteryRangeDto> batteryData)
+        {
             dataGridView2.DataSource = batteryData;
+
             dataGridView2.Columns["FrameId"].Visible = false;
             dataGridView2.Columns["BatteryFrameId"].Visible = false;
+            dataGridView2.Columns["DriverName"].Visible = false;
+            dataGridView2.Columns["DriverAbbreviation"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView2.Columns["Lap"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView2.Columns["Status"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dataGridView2.Columns["TimeRange"].HeaderText = "Time";
-            if (batteryData.Any())
+            dataGridView2.Columns["DriverAbbreviation"].HeaderText = "Driver";
+            int totalHeight = dataGridView2.ColumnHeadersVisible ? dataGridView2.ColumnHeadersHeight : 0;
+            foreach (DataGridViewRow row in dataGridView2.Rows)
             {
-                int totalWidth = dataGridView2.RowHeadersVisible ? dataGridView2.RowHeadersWidth : 0;
-                foreach (DataGridViewColumn column in dataGridView2.Columns)
-                {
-                    totalWidth += column.Width;
-                }
-
-                int totalHeight = dataGridView2.ColumnHeadersVisible ? dataGridView2.ColumnHeadersHeight : 0;
-                foreach (DataGridViewRow row in dataGridView2.Rows)
-                {
-                    totalHeight += row.Height;
-                }
-                dataGridView2.Size = new Size(totalWidth, totalHeight);
-                dataGridView2.Width = totalWidth;
-                dataGridView2.Height = totalHeight;
-                dataGridView2.Visible = true;
+                totalHeight += row.Height;
             }
+            dataGridView2.Height = totalHeight;
         }
 
         private void LoadDataDriver(string driver)
@@ -198,22 +200,14 @@ namespace DataViewerFront
 
         private void LoadOnboardTable(IEnumerable<DriverOnboardRangeDto> onboardData)
         {
-            dataGridView1.DataSource = onboardData;
-            dataGridView1.Columns["OnboardFrameId"].Visible = false;
-            dataGridView1.Columns["TimeRange"].HeaderText = "Time";
-            dataGridView1.Columns["TeamName"].Visible = false;
-            dataGridView1.Visible = true;
+            InitializeOnboardTable(onboardData.ToList());
             dataGridView1.Visible = true;
             onboardsLabel.Visible = true;
         }
 
         private void LoadBatteryTable(IEnumerable<DriverBatteryRangeDto> batteryData)
         {
-            dataGridView2.DataSource = batteryData;
-            dataGridView2.Columns["FrameId"].Visible = false;
-            dataGridView2.Columns["BatteryFrameId"].Visible = false;
-            dataGridView2.Columns["TimeRange"].HeaderText = "Time";
-            dataGridView2.Visible = true;
+            InitializeBatteryTable(batteryData.ToList());
             dataGridView2.Visible = true;
             batteryLabel.Visible = true;
         }
@@ -271,6 +265,38 @@ namespace DataViewerFront
             _isDragging = false;
             var position = (float)trackBar1.Value / trackBar1.Maximum;
             _mediaPlayer.Position = position;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            long currentTime = _mediaPlayer.Time;
+            currentTime += 5000;
+
+            if (currentTime > _mediaPlayer.Length)
+            {
+                currentTime = _mediaPlayer.Length;
+            }
+
+            _mediaPlayer.Time = currentTime;
+            labelCurrentTime.Text = TimeSpan.FromMilliseconds(currentTime).ToString(@"hh\:mm\:ss");
+            float position = _mediaPlayer.Position;
+            trackBar1.Value = Math.Min(trackBar1.Maximum, (int)(position * trackBar1.Maximum));
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            long currentTime = _mediaPlayer.Time;
+            currentTime -= 5000;
+
+            if (currentTime < 0)
+            {
+                currentTime = 0;
+            }
+
+            _mediaPlayer.Time = currentTime;
+            labelCurrentTime.Text = TimeSpan.FromMilliseconds(currentTime).ToString(@"hh\:mm\:ss");
+            float position = _mediaPlayer.Position;
+            trackBar1.Value = Math.Min(trackBar1.Maximum, (int)(position * trackBar1.Maximum));
         }
     }
 }
