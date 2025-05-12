@@ -32,10 +32,12 @@ namespace DataViewerFront
         {
             openFileDialog1 = new OpenFileDialog();
             dataGridView1 = new DataGridView();
-            textBox1 = new TextBox();
             button2 = new Button();
             button1 = new Button();
             button3 = new Button();
+            label1 = new Label();
+            comboBox1 = new ComboBox();
+            label2 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -47,23 +49,15 @@ namespace DataViewerFront
             // 
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(183, 158);
+            dataGridView1.Location = new Point(123, 168);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(424, 150);
             dataGridView1.TabIndex = 2;
             dataGridView1.CellClick += dataGridView1_CellClick;
             // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(183, 117);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(45, 23);
-            textBox1.TabIndex = 3;
-            textBox1.Text = "Videos:";
-            // 
             // button2
             // 
-            button2.Location = new Point(361, 46);
+            button2.Location = new Point(298, 51);
             button2.Name = "button2";
             button2.Size = new Size(75, 23);
             button2.TabIndex = 4;
@@ -74,7 +68,7 @@ namespace DataViewerFront
             // button1
             // 
             button1.Enabled = false;
-            button1.Location = new Point(514, 117);
+            button1.Location = new Point(389, 113);
             button1.Name = "button1";
             button1.Size = new Size(93, 23);
             button1.TabIndex = 5;
@@ -84,7 +78,7 @@ namespace DataViewerFront
             // 
             // button3
             // 
-            button3.Location = new Point(361, 117);
+            button3.Location = new Point(200, 113);
             button3.Name = "button3";
             button3.Size = new Size(75, 23);
             button3.TabIndex = 6;
@@ -92,15 +86,44 @@ namespace DataViewerFront
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(123, 117);
+            label1.Name = "label1";
+            label1.Size = new Size(45, 15);
+            label1.TabIndex = 7;
+            label1.Text = "Videos:";
+            // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Items.AddRange(new object[] { "5s", "2s", "1s" });
+            comboBox1.Location = new Point(546, 113);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(83, 23);
+            comboBox1.TabIndex = 8;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(524, 95);
+            label2.Name = "label2";
+            label2.Size = new Size(124, 15);
+            label2.TabIndex = 9;
+            label2.Text = "Process a frame every:";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label2);
+            Controls.Add(comboBox1);
+            Controls.Add(label1);
             Controls.Add(button3);
             Controls.Add(button1);
             Controls.Add(button2);
-            Controls.Add(textBox1);
             Controls.Add(dataGridView1);
             Name = "MainForm";
             Text = "Form1";
@@ -113,9 +136,11 @@ namespace DataViewerFront
         #endregion
         private OpenFileDialog openFileDialog1;
         private DataGridView dataGridView1;
-        private TextBox textBox1;
         private Button button2;
         private Button button1;
         private Button button3;
+        private Label label1;
+        private ComboBox comboBox1;
+        private Label label2;
     }
 }

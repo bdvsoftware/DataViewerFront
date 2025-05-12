@@ -50,11 +50,11 @@ namespace DataViewerFront.Services
             });
         }
 
-        public async Task ProcessVideo(int? videoId)
+        public async Task ProcessVideo(int? videoId, int threshold)
         {
             if(videoId != null)
             {
-                var response = await _httpClient.PostAsync(_videoUrl + "/process/" + videoId, null);
+                var response = await _httpClient.PostAsync(_videoUrl + "/process/" + videoId + "/" + threshold, null);
                 if (!response.IsSuccessStatusCode)
                 {
                     throw new Exception($"Error while processing. Código: {response.StatusCode}");

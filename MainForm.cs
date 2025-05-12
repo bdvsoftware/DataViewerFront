@@ -50,6 +50,7 @@ namespace DataViewerFront
 
         private async void Form1_Load(object sender, EventArgs e)
         {
+            comboBox1.SelectedItem = comboBox1.Items[0];
             await LoadVideos();
         }
 
@@ -119,7 +120,9 @@ namespace DataViewerFront
         {
 
             MessageBox.Show("Video processing started. It could take some minutes, depending on file size.");
-            await _videoService.ProcessVideo(_selectedVideoId);
+            var selected = comboBox1.SelectedItem.ToString();
+            var threshold = int.Parse(selected.TrimEnd('s'));
+            await _videoService.ProcessVideo(_selectedVideoId, threshold);
             await LoadVideos();
         }
 
