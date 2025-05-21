@@ -20,6 +20,7 @@
             base.Dispose(disposing);
         }
 
+
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -52,7 +53,7 @@
             // videoView1
             // 
             videoView1.BackColor = Color.Black;
-            videoView1.Location = new Point(51, 48);
+            videoView1.Location = new Point(314, 57);
             videoView1.MediaPlayer = null;
             videoView1.Name = "videoView1";
             videoView1.Size = new Size(1218, 596);
@@ -61,7 +62,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(420, 728);
+            button1.Location = new Point(493, 728);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 2;
@@ -71,7 +72,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(837, 728);
+            button2.Location = new Point(1280, 728);
             button2.Name = "button2";
             button2.Size = new Size(75, 23);
             button2.TabIndex = 3;
@@ -82,7 +83,7 @@
             // comboBox1
             // 
             comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(1547, 85);
+            comboBox1.Location = new Point(800, 28);
             comboBox1.Name = "comboBox1";
             comboBox1.Size = new Size(150, 23);
             comboBox1.TabIndex = 4;
@@ -93,9 +94,9 @@
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(1478, 156);
+            dataGridView1.Location = new Point(12, 135);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(276, 198);
+            dataGridView1.Size = new Size(296, 198);
             dataGridView1.TabIndex = 5;
             dataGridView1.CellClick += DataGridView1_CellClick;
             // 
@@ -104,16 +105,16 @@
             dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView2.Location = new Point(1431, 446);
+            dataGridView2.Location = new Point(1538, 135);
             dataGridView2.Name = "dataGridView2";
-            dataGridView2.Size = new Size(371, 198);
+            dataGridView2.Size = new Size(370, 185);
             dataGridView2.TabIndex = 6;
             dataGridView2.CellClick += DataGridView2_CellClick;
             // 
             // labelCurrentTime
             // 
             labelCurrentTime.AutoSize = true;
-            labelCurrentTime.Location = new Point(190, 675);
+            labelCurrentTime.Location = new Point(314, 675);
             labelCurrentTime.Name = "labelCurrentTime";
             labelCurrentTime.Size = new Size(49, 15);
             labelCurrentTime.TabIndex = 8;
@@ -122,7 +123,7 @@
             // labelTotalTime
             // 
             labelTotalTime.AutoSize = true;
-            labelTotalTime.Location = new Point(1124, 675);
+            labelTotalTime.Location = new Point(1483, 675);
             labelTotalTime.Name = "labelTotalTime";
             labelTotalTime.Size = new Size(49, 15);
             labelTotalTime.TabIndex = 9;
@@ -135,7 +136,7 @@
             // trackBar1
             // 
             trackBar1.LargeChange = 1;
-            trackBar1.Location = new Point(244, 675);
+            trackBar1.Location = new Point(493, 675);
             trackBar1.Maximum = 100;
             trackBar1.Name = "trackBar1";
             trackBar1.Size = new Size(862, 45);
@@ -146,7 +147,7 @@
             // onboardsLabel
             // 
             onboardsLabel.AutoSize = true;
-            onboardsLabel.Location = new Point(1602, 126);
+            onboardsLabel.Location = new Point(125, 117);
             onboardsLabel.Name = "onboardsLabel";
             onboardsLabel.Size = new Size(62, 15);
             onboardsLabel.TabIndex = 11;
@@ -155,7 +156,7 @@
             // batteryLabel
             // 
             batteryLabel.AutoSize = true;
-            batteryLabel.Location = new Point(1602, 399);
+            batteryLabel.Location = new Point(1688, 117);
             batteryLabel.Name = "batteryLabel";
             batteryLabel.Size = new Size(47, 15);
             batteryLabel.TabIndex = 12;
@@ -163,7 +164,7 @@
             // 
             // button3
             // 
-            button3.Location = new Point(563, 728);
+            button3.Location = new Point(695, 728);
             button3.Name = "button3";
             button3.Size = new Size(75, 23);
             button3.TabIndex = 13;
@@ -173,7 +174,7 @@
             // 
             // button4
             // 
-            button4.Location = new Point(693, 728);
+            button4.Location = new Point(1057, 728);
             button4.Name = "button4";
             button4.Size = new Size(75, 23);
             button4.TabIndex = 14;
@@ -208,6 +209,8 @@
             ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
             ResumeLayout(false);
             PerformLayout();
+
+            this.FormClosing += VideoPlayerForm_FormClosing;
         }
 
         #endregion

@@ -18,6 +18,8 @@ namespace DataViewerFront
         private LibVLC _libVLC;
         private bool _isDragging = false;
 
+        private readonly int _maxHeight = 300;
+
         public VideoPlayerForm(int? videoId)
         {
             InitializeComponent();
@@ -148,7 +150,14 @@ namespace DataViewerFront
             {
                 totalHeight += row.Height;
             }
-            dataGridView1.Height = totalHeight;
+            if(totalHeight <= _maxHeight)
+            {
+                dataGridView1.Height = totalHeight;
+            }
+            else
+            {
+                dataGridView1.Height = _maxHeight;
+            }
         }
 
         private void InitializeBatteryTable(List<DriverBatteryRangeDto> batteryData)
@@ -168,7 +177,14 @@ namespace DataViewerFront
             {
                 totalHeight += row.Height;
             }
-            dataGridView2.Height = totalHeight;
+            if (totalHeight <= _maxHeight)
+            {
+                dataGridView2.Height = totalHeight;
+            }
+            else
+            {
+                dataGridView2.Height = _maxHeight;
+            }
         }
 
         private void LoadDataDriver(string driver)
@@ -297,6 +313,20 @@ namespace DataViewerFront
             labelCurrentTime.Text = TimeSpan.FromMilliseconds(currentTime).ToString(@"hh\:mm\:ss");
             float position = _mediaPlayer.Position;
             trackBar1.Value = Math.Min(trackBar1.Maximum, (int)(position * trackBar1.Maximum));
+        }
+
+        public void VideoPlayerForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_mediaPlayer != null)
+            {
+                _mediaPlayer.Stop();
+                _mediaPlayer.Dispose(); // Libera recursos del MediaPlayer
+            }
+
+            if (_libVLC != null)
+            {
+                _libVLC.Dispose(); // Libera recursos de LibVLC si no lo necesitas más
+            }
         }
     }
 }
