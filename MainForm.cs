@@ -35,7 +35,7 @@ namespace DataViewerFront
 
                 button1.Enabled = true;
 
-                if (dataGridView1.Columns[e.ColumnIndex].Name == "PlayIcon")
+                if (dataGridView1.Columns[e.ColumnIndex].Name == "Player")
                 {
                     var row = dataGridView1.Rows[e.RowIndex];
                     if (row.DataBoundItem is ResponseVideoDto video && video.ShowPlayer)
@@ -72,25 +72,31 @@ namespace DataViewerFront
             dataGridView1.Columns["VideoId"].Visible = false;
             dataGridView1.Columns["SessionId"].Visible = false;
             dataGridView1.Columns["ShowPlayer"].Visible = false;
-            Image playIcon = Image.FromFile("C:/racing/DataViewerFront/Resources/Img/play.png");
+            byte[] imageData = Properties.Resources.play;
+            Image playIcon;
 
-
-            var iconColumn = new DataGridViewImageColumn
+            using (var ms = new MemoryStream(imageData))
             {
-                Name = "PlayIcon",
+                playIcon = Image.FromStream(ms);
+            }
+
+
+            var playerColumn = new DataGridViewTextBoxColumn
+            {
+                Name = "Player",
                 HeaderText = "Player",
-                ImageLayout = DataGridViewImageCellLayout.Zoom,
-                Width = 50
+                Width = 50,
+                ReadOnly = true
 
             };
-            iconColumn.DefaultCellStyle.NullValue = null;
-            dataGridView1.Columns.Add(iconColumn);
+            playerColumn.DefaultCellStyle.NullValue = null;
+            dataGridView1.Columns.Add(playerColumn);
 
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if (row.DataBoundItem is ResponseVideoDto video && video.ShowPlayer)
                 {
-                    row.Cells["PlayIcon"].Value = video.ShowPlayer ? playIcon : null;
+                    row.Cells["Player"].Value = video.ShowPlayer ? "PLAY" : null;
                 }
             }
 

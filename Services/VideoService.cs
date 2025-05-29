@@ -24,9 +24,10 @@ namespace DataViewerFront.Services
 
                 var streamContent = new ProgressableStreamContent(fileStream, 65536, progressCallback);
                 streamContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                form.Add(streamContent, "file", Path.GetFileName(filePath));
-                form.Add(new StringContent(gpName), "grandPrixName");
-                form.Add(new StringContent(sessionName), "sessionName");
+                form.Add(streamContent, "File", Path.GetFileName(filePath));
+                form.Add(new StringContent(gpName), "GrandPrixName");
+                form.Add(new StringContent(sessionName), "SessionName");
+                form.Add(new StringContent(filePath), "Path");
 
                 var response = await _httpClient.PostAsync(_videoUrl + "/upload", form);
                 if (!response.IsSuccessStatusCode)
