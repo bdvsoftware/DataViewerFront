@@ -18,6 +18,8 @@ namespace DataViewerFront
         private LibVLC _libVLC;
         private bool _isDragging = false;
 
+        private DataGridViewRow? _selectedOnboardRow;
+
         private readonly int _maxHeight = 300;
 
         public VideoPlayerForm(int? videoId)
@@ -29,6 +31,7 @@ namespace DataViewerFront
             _videoId = videoId;
             _libVLC = new LibVLC();
             _mediaPlayer = new MediaPlayer(_libVLC);
+            _selectedOnboardRow = null;
         }
 
         private async void VideoPlayerForm_Load(object sender, EventArgs e)
@@ -150,7 +153,7 @@ namespace DataViewerFront
             {
                 totalHeight += row.Height;
             }
-            if(totalHeight <= _maxHeight)
+            if (totalHeight <= _maxHeight)
             {
                 dataGridView1.Height = totalHeight;
             }
@@ -240,17 +243,22 @@ namespace DataViewerFront
         }
 
         public void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.ColumnIndex != null && e.ColumnIndex.Equals(4))
+        { 
+            if (e.ColumnIndex != null)
             {
-                var value = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                var startTime = value.Split(new[] { " - " }, StringSplitOptions.None)[0];
-                var timeSpan = TimeSpan.Parse(startTime);
-                _mediaPlayer.SeekTo(timeSpan);
-                long currentTime = _mediaPlayer.Time;
-                labelCurrentTime.Text = TimeSpan.FromMilliseconds(currentTime).ToString(@"hh\:mm\:ss");
-                float position = _mediaPlayer.Position;
-                trackBar1.Value = Math.Min(trackBar1.Maximum, (int)(position * trackBar1.Maximum));
+                _selectedOnboardRow = dataGridView1.Rows[e.RowIndex];
+                editOnboardButton.Enabled = true;
+                if (e.ColumnIndex.Equals(4))
+                {
+                    var value = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    var startTime = value.Split(new[] { " - " }, StringSplitOptions.None)[0];
+                    var timeSpan = TimeSpan.Parse(startTime);
+                    _mediaPlayer.SeekTo(timeSpan);
+                    long currentTime = _mediaPlayer.Time;
+                    labelCurrentTime.Text = TimeSpan.FromMilliseconds(currentTime).ToString(@"hh\:mm\:ss");
+                    float position = _mediaPlayer.Position;
+                    trackBar1.Value = Math.Min(trackBar1.Maximum, (int)(position * trackBar1.Maximum));
+                }
             }
         }
 
@@ -320,13 +328,27 @@ namespace DataViewerFront
             if (_mediaPlayer != null)
             {
                 _mediaPlayer.Stop();
-                _mediaPlayer.Dispose(); // Libera recursos del MediaPlayer
+                _mediaPlayer.Dispose();
             }
 
             if (_libVLC != null)
             {
-                _libVLC.Dispose(); // Libera recursos de LibVLC si no lo necesitas más
+                _libVLC.Dispose();
             }
+        }
+
+        private void editOnboardButton_Click(object sender, EventArgs e)
+        {
+            var currentTimestamp = (int)Math.Round(_mediaPlayer.Time / 1000.0);
+            var driverName = _selectedOnboardRow.Cells["DriverName"].Value.ToString();
+            var driverAbbr = _selectedOnboardRow.Cells["DriverAbbreviation"].Value.ToString();
+            PopUpEditOnboard popUpEditOnboard = new PopUpEditOnboard(_videoId, currentTimestamp, _drivers, driverAbbr, driverName);
+            popUpEditOnboard.Show();
+        }
+
+        private Boolean editOnboardButton_IsEnable(object sender, EventArgs e)
+        {
+            return _selectedOnboardRow != null;
         }
     }
 }

@@ -44,6 +44,7 @@
             batteryLabel = new Label();
             button3 = new Button();
             button4 = new Button();
+            editOnboardButton = new Button();
             ((System.ComponentModel.ISupportInitialize)videoView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
@@ -182,11 +183,23 @@
             button4.UseVisualStyleBackColor = true;
             button4.Click += button4_Click;
             // 
+            // editOnboardButton
+            // 
+            editOnboardButton.Location = new Point(120, 73);
+            editOnboardButton.Name = "editOnboardButton";
+            editOnboardButton.Size = new Size(67, 23);
+            editOnboardButton.TabIndex = 15;
+            editOnboardButton.Text = "Edit";
+            editOnboardButton.UseVisualStyleBackColor = true;
+            editOnboardButton.Enabled = false;
+            editOnboardButton.Click += editOnboardButton_Click;
+            // 
             // VideoPlayerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1920, 1080);
+            Controls.Add(editOnboardButton);
             Controls.Add(button4);
             Controls.Add(button3);
             Controls.Add(batteryLabel);
@@ -202,6 +215,7 @@
             Controls.Add(videoView1);
             Name = "VideoPlayerForm";
             Text = "VideoPlayerForm";
+            FormClosing += VideoPlayerForm_FormClosing;
             Load += VideoPlayerForm_Load;
             ((System.ComponentModel.ISupportInitialize)videoView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
@@ -209,8 +223,6 @@
             ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
             ResumeLayout(false);
             PerformLayout();
-
-            this.FormClosing += VideoPlayerForm_FormClosing;
         }
 
         #endregion
@@ -228,5 +240,6 @@
         private Label batteryLabel;
         private Button button3;
         private Button button4;
+        private Button editOnboardButton;
     }
 }
