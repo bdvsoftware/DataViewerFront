@@ -17,9 +17,9 @@ namespace DataViewerFront.Services
             _frameUrl = _apiUrl + "/frame";
         }
 
-        public async Task UpdateFrameData(int? videoId, int timestamp, int lap, string driverAbbr)
+        public async Task UpdateFrameData(int? videoId, int initTime, int endTime, int? lap, string driverAbbr)
         {
-            var requestDto = new UpdateFrameRequestDto(videoId, timestamp, lap, driverAbbr);
+            var requestDto = new UpdateFrameRequestDto(videoId, initTime, endTime, lap, driverAbbr);
 
             var json = JsonSerializer.Serialize(requestDto);
             var body = new StringContent(json, Encoding.UTF8, "application/json");

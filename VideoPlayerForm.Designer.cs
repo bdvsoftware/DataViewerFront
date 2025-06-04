@@ -54,16 +54,16 @@
             // videoView1
             // 
             videoView1.BackColor = Color.Black;
-            videoView1.Location = new Point(314, 57);
+            videoView1.Location = new Point(370, 117);
             videoView1.MediaPlayer = null;
             videoView1.Name = "videoView1";
-            videoView1.Size = new Size(1218, 596);
+            videoView1.Size = new Size(1113, 500);
             videoView1.TabIndex = 1;
             videoView1.Text = "videoView1";
             // 
             // button1
             // 
-            button1.Location = new Point(493, 728);
+            button1.Location = new Point(484, 728);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 2;
@@ -73,7 +73,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(1280, 728);
+            button2.Location = new Point(1271, 728);
             button2.Name = "button2";
             button2.Size = new Size(75, 23);
             button2.TabIndex = 3;
@@ -97,7 +97,7 @@
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(12, 135);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(296, 198);
+            dataGridView1.Size = new Size(339, 198);
             dataGridView1.TabIndex = 5;
             dataGridView1.CellClick += DataGridView1_CellClick;
             // 
@@ -106,16 +106,16 @@
             dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView2.Location = new Point(1538, 135);
+            dataGridView2.Location = new Point(1507, 135);
             dataGridView2.Name = "dataGridView2";
-            dataGridView2.Size = new Size(370, 185);
+            dataGridView2.Size = new Size(401, 185);
             dataGridView2.TabIndex = 6;
             dataGridView2.CellClick += DataGridView2_CellClick;
             // 
             // labelCurrentTime
             // 
             labelCurrentTime.AutoSize = true;
-            labelCurrentTime.Location = new Point(314, 675);
+            labelCurrentTime.Location = new Point(370, 644);
             labelCurrentTime.Name = "labelCurrentTime";
             labelCurrentTime.Size = new Size(49, 15);
             labelCurrentTime.TabIndex = 8;
@@ -124,7 +124,7 @@
             // labelTotalTime
             // 
             labelTotalTime.AutoSize = true;
-            labelTotalTime.Location = new Point(1483, 675);
+            labelTotalTime.Location = new Point(1434, 644);
             labelTotalTime.Name = "labelTotalTime";
             labelTotalTime.Size = new Size(49, 15);
             labelTotalTime.TabIndex = 9;
@@ -137,7 +137,7 @@
             // trackBar1
             // 
             trackBar1.LargeChange = 1;
-            trackBar1.Location = new Point(493, 675);
+            trackBar1.Location = new Point(484, 644);
             trackBar1.Maximum = 100;
             trackBar1.Name = "trackBar1";
             trackBar1.Size = new Size(862, 45);
@@ -185,13 +185,13 @@
             // 
             // editOnboardButton
             // 
+            editOnboardButton.Enabled = false;
             editOnboardButton.Location = new Point(120, 73);
             editOnboardButton.Name = "editOnboardButton";
             editOnboardButton.Size = new Size(67, 23);
             editOnboardButton.TabIndex = 15;
             editOnboardButton.Text = "Edit";
             editOnboardButton.UseVisualStyleBackColor = true;
-            editOnboardButton.Enabled = false;
             editOnboardButton.Click += editOnboardButton_Click;
             // 
             // VideoPlayerForm

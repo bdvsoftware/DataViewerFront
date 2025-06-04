@@ -77,23 +77,6 @@ namespace DataViewerFront
             _mediaPlayer.Play();
         }
 
-        private void treeView1_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if (e.Node.Parent != null
-                && (e.Node.Parent.Text == "Onboards" || e.Node.Parent.Text == "Battery"))
-            {
-                if (TimeSpan.TryParse(e.Node.Text, out TimeSpan time))
-                {
-                    _mediaPlayer.SeekTo(time);
-
-                }
-                else
-                {
-                    MessageBox.Show($"Formato de tiempo no válido: {e.Node.Text}\nUsa hh:mm:ss");
-                }
-            }
-        }
-
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadTablesData();
@@ -148,6 +131,9 @@ namespace DataViewerFront
             dataGridView1.Columns["TeamName"].Visible = false;
             dataGridView1.Columns["DriverName"].Visible = false;
             dataGridView1.Columns["DriverAbbreviation"].HeaderText = "Driver";
+            dataGridView1.Columns["DriverName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns["Lap"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            dataGridView1.Columns["TimeRange"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             int totalHeight = dataGridView1.ColumnHeadersVisible ? dataGridView1.ColumnHeadersHeight : 0;
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
@@ -342,13 +328,36 @@ namespace DataViewerFront
             var currentTimestamp = (int)Math.Round(_mediaPlayer.Time / 1000.0);
             var driverName = _selectedOnboardRow.Cells["DriverName"].Value.ToString();
             var driverAbbr = _selectedOnboardRow.Cells["DriverAbbreviation"].Value.ToString();
-            PopUpEditOnboard popUpEditOnboard = new PopUpEditOnboard(_videoId, currentTimestamp, _drivers, driverAbbr, driverName);
+            int lap = _selectedOnboardRow.Cells["Lap"].Value != null ? Convert.ToInt32(_selectedOnboardRow.Cells["Lap"].Value) : 0;
+            var initTime = extractSeconds(_selectedOnboardRow.Cells["TimeRange"].Value.ToString(), true);
+            var endTime = extractSeconds(_selectedOnboardRow.Cells["TimeRange"].Value.ToString(), false);
+            PopUpEditOnboard popUpEditOnboard = new PopUpEditOnboard(_videoId, _drivers, driverAbbr, driverName, lap, initTime, endTime);
+            popUpEditOnboard.FormClosed += PopUpEditOnboard_FormClosed;
             popUpEditOnboard.Show();
         }
 
         private Boolean editOnboardButton_IsEnable(object sender, EventArgs e)
         {
             return _selectedOnboardRow != null;
+        }
+
+        private string extractSeconds(string range, Boolean isInit)
+        {
+            var parts = range.Split(" - ");
+            if (isInit)
+            {
+                return parts[0];
+            }
+            else
+            {
+                return parts[1];
+            }
+        }
+
+        private async void PopUpEditOnboard_FormClosed(object sender, EventArgs e)
+        {
+            _videoData = await _videoService.GetVideoData(_videoId);
+            LoadTablesData();
         }
     }
 }

@@ -32,6 +32,10 @@
             driverLabel = new Label();
             saveButton = new Button();
             deleteButton = new Button();
+            comboLaps = new ComboBox();
+            lapLabel = new Label();
+            textBoxTo = new TextBox();
+            textBoxFrom = new TextBox();
             SuspendLayout();
             // 
             // comboDrivers
@@ -53,7 +57,7 @@
             // 
             // saveButton
             // 
-            saveButton.Location = new Point(25, 201);
+            saveButton.Location = new Point(25, 241);
             saveButton.Name = "saveButton";
             saveButton.Size = new Size(75, 23);
             saveButton.TabIndex = 4;
@@ -63,18 +67,55 @@
             // 
             // deleteButton
             // 
-            deleteButton.Location = new Point(153, 201);
+            deleteButton.Location = new Point(153, 241);
             deleteButton.Name = "deleteButton";
             deleteButton.Size = new Size(75, 23);
             deleteButton.TabIndex = 5;
             deleteButton.Text = "Delete";
             deleteButton.UseVisualStyleBackColor = true;
             // 
+            // comboLaps
+            // 
+            comboLaps.FormattingEnabled = true;
+            comboLaps.Location = new Point(79, 130);
+            comboLaps.Name = "comboLaps";
+            comboLaps.Size = new Size(80, 23);
+            comboLaps.TabIndex = 6;
+            // 
+            // lapLabel
+            // 
+            lapLabel.AutoSize = true;
+            lapLabel.Location = new Point(107, 112);
+            lapLabel.Name = "lapLabel";
+            lapLabel.Size = new Size(29, 15);
+            lapLabel.TabIndex = 7;
+            lapLabel.Text = "Lap:";
+            // 
+            // textBoxTo
+            // 
+            textBoxTo.Location = new Point(128, 199);
+            textBoxTo.Name = "textBoxTo";
+            textBoxTo.ReadOnly = true;
+            textBoxTo.Size = new Size(100, 23);
+            textBoxTo.TabIndex = 8;
+            // 
+            // textBoxFrom
+            // 
+            textBoxFrom.Location = new Point(25, 199);
+            textBoxFrom.Name = "textBoxFrom";
+            textBoxFrom.ReadOnly = true;
+            textBoxFrom.Size = new Size(100, 23);
+            textBoxFrom.TabIndex = 9;
+            // 
             // PopUpEditOnboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(250, 250);
+            ClientSize = new Size(250, 359);
+            Controls.Add(textBoxFrom);
+            Controls.Add(textBoxTo);
+            Controls.Add(lapLabel);
+            Controls.Add(comboLaps);
             Controls.Add(deleteButton);
             Controls.Add(saveButton);
             Controls.Add(driverLabel);
@@ -91,5 +132,9 @@
         private Label driverLabel;
         private Button saveButton;
         private Button deleteButton;
+        private ComboBox comboLaps;
+        private Label lapLabel;
+        private TextBox textBoxTo;
+        private TextBox textBoxFrom;
     }
 }
