@@ -53,7 +53,7 @@
             // 
             // saveButton
             // 
-            saveButton.Location = new Point(25, 99);
+            saveButton.Location = new Point(25, 201);
             saveButton.Name = "saveButton";
             saveButton.Size = new Size(75, 23);
             saveButton.TabIndex = 4;
@@ -63,7 +63,7 @@
             // 
             // deleteButton
             // 
-            deleteButton.Location = new Point(153, 99);
+            deleteButton.Location = new Point(153, 201);
             deleteButton.Name = "deleteButton";
             deleteButton.Size = new Size(75, 23);
             deleteButton.TabIndex = 5;

@@ -18,12 +18,12 @@ namespace DataViewerFront
         private int _timestamp;
         private List<string> _drivers;
 
-        private readonly VideoService _videoService;
+        private readonly FrameService _frameService;
 
         public PopUpEditOnboard(int? videoId, int timestamp, List<string> drivers, string currentDriverAbbr, string currentDriverName)
         {
             InitializeComponent();
-            _videoService = new VideoService();
+            _frameService = new FrameService();
             _videoId = videoId;
             _timestamp = timestamp;
             _drivers = drivers;
@@ -33,9 +33,26 @@ namespace DataViewerFront
             comboDrivers.SelectedItem = "("+currentDriverAbbr+") "+currentDriverName;
         }
 
-        private void saveButton_Click(object sender, EventArgs e)
+        private async void saveButton_Click(object sender, EventArgs e)
         {
+            var driverAbbr = GetDriverAbbreviation(comboDrivers.SelectedItem.ToString());
+            await _frameService.UpdateFrameData(_videoId, _timestamp, 1, driverAbbr);
+        }
 
+        private string GetDriverAbbreviation(string comboDrivers)
+        {
+            if (string.IsNullOrWhiteSpace(comboDrivers))
+                return string.Empty;
+
+            int start = comboDrivers.IndexOf('(');
+            int end = comboDrivers.IndexOf(')');
+
+            if (start >= 0 && end > start)
+            {
+                return comboDrivers.Substring(start + 1, end - start - 1);
+            }
+
+            return string.Empty;
         }
     }
 }
